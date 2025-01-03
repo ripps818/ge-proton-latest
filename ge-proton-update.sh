@@ -1,11 +1,10 @@
-#!/bin/sh
+#!/bin/bash
 
 set -e
 
 # Configuration
 STEAM_DIR=""
 COMPAT_DIR=""
-GITHUB_API="https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest"
 
 # Help Message (Optional - remove if not needed)
 print_help() {
@@ -63,25 +62,11 @@ detect_steam_dir() {
   COMPAT_DIR="$STEAM_DIR/compatibilitytools.d"
 }
 
-# Get Latest Release Information
-get_latest_release() {
-  local json_data=$(curl -s "$GITHUB_API")
-  LATEST_RELEASE=$(echo "$json_data" | jq -r '.tag_name')
-  LATEST_URL=$(echo "$json_data" | jq -r '.assets[1].browser_download_url')
-  SHA_URL=$(echo "$json_data" | jq -r '.assets[0].browser_download_url')
-
-  if [ -z "$LATEST_RELEASE" ] || [ -z "$LATEST_URL" ] || [ -z "$SHA_URL" ]; then
-    echo "Error: Could not retrieve latest release information." >&2
-    return 1
-  fi
-  echo "$LATEST_RELEASE $LATEST_URL $SHA_URL"
-}
-
 # Download, Verify, and Install
 download_verify_install() {
-  local version="$1"
-  local url="$2"
-  local sha_url="$3"
+  local version=$(curl -s https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest | grep "tag_name" | awk '{print $2}' | tr -d '"' | tr -d ",")
+  local tar_url=$(curl -s https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest | grep "browser_download_url" | grep "tar.gz" | awk '{print $2}' | tr -d '"')
+  local sha_url=$(curl -s https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest | grep "browser_download_url" | grep "sha512sum" | awk '{print $2}' | tr -d '"')
   local temp_dir=$(mktemp -d)
   local archive_path="$temp_dir/$version.tar.gz"
   local sha_path="$temp_dir/$version.sha512sum"
@@ -95,7 +80,7 @@ download_verify_install() {
   fi
 
   echo "Downloading GE-Proton: $url"
-  curl -s -L "$url" -o "$archive_path" || {
+  curl -s -L "$tar_url" -o "$archive_path" || {
     echo "Error downloading GE-Proton." >&2
     rm -rf "$temp_dir"
     return 1
@@ -142,18 +127,13 @@ download_verify_install() {
 parse_flags "$@"
 detect_steam_dir
 
-if get_latest_release; then
-  read LATEST_VERSION LATEST_URL SHA_URL <<< "$(get_latest_release)"
-  download_verify_install "$LATEST_VERSION" "$LATEST_URL" "$SHA_URL"
-  if [ $? -eq 0 ]; then
-      echo "GE-Proton update complete."
-      exit 0
-  else
+download_verify_install
+if [ $? -eq 0 ]; then
+  echo "GE-Proton update complete."
+  exit 0
+else
     echo "GE-Proton update failed." >&2
     exit 1
-  fi
-else
-  exit 1
 fi
 
 echo "GE-Proton Update check complete."

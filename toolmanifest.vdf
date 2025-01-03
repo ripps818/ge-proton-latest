@@ -1,10 +1,9 @@
 "manifest"
 {
-  "name" "GE-Proton-Latest"
-  "version" "1.0"
-  "description"	"Install and run latest GE-Proton"
+  "version" "2"
   "commandline"	"/wrapper.sh %verb%"
   "require_tool_appid" "1628350"
   "use_sessions" "1"
   "compatmanager_layer_name" "proton"
 }
+

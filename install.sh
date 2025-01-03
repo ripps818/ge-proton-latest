@@ -2,11 +2,11 @@
 
 set -e
 
-# Check for jq
-if ! command -v jq &> /dev/null; then
-  echo "Error: jq is not installed. Please install jq before proceeding." >&2
-  exit 1
-fi
+## Check for jq
+#if ! command -v jq &> /dev/null; then
+#  echo "Error: jq is not installed. Please install jq before proceeding." >&2
+#  exit 1
+#fi
 
 # Get Steam directory. Using parameter expansion to avoid potential issues with spaces in the home directory.
 STEAM_DIR="${HOME}/.steam/steam"
