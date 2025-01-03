@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 # Check for jq
 if ! command -v jq &> /dev/null; then
   echo "Error: jq is not installed. Please install jq before proceeding." >&2
@@ -22,7 +24,7 @@ INSTALL_DIR="$COMPAT_DIR/GE-Proton-Latest"
 mkdir -p "$INSTALL_DIR" || {
     echo "Error: Could not create GE-Proton-Latest directory." >&2
     exit 1
-fi
+}
 
 # Define the files to download.  **UPDATE THESE WITH YOUR ACTUAL FILE NAMES**
 FILES=(
@@ -58,4 +60,4 @@ chmod +x "$INSTALL_DIR/ge-proton-update.sh" "$INSTALL_DIR/wrapper.sh" || {
     exit 1
 }
 
-echo "Installation of ge-proton-latest complete."
+echo "Installation of ge-proton-latest complete.  Please restart Steam for the changes to take effect."
