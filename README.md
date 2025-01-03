@@ -14,9 +14,8 @@ This script simplifies the process of installing and managing Glorious Eggroll's
 ## Requirements
 
 *   `curl`: For downloading files from the internet.
-*   `jq`: For parsing JSON data (available via most package managers: `apt-get install jq`, `yum install jq`, etc.).
 *   `tar`: For extracting the GE-Proton archive.
-*   `find`, `sort`, `tail` standard linux utilities.
+*   `find`, `sort`, `tail`, `tr` standard linux utilities.
 
 
 ## Installation
