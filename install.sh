@@ -32,7 +32,7 @@ FILES=(
   "wrapper.sh"
   "compatibilitytool.vdf"
   "version"
-  "toolsmanifest.vdf"
+  "toolmanifest.vdf"
 )
 
 # GitHub repository information. UPDATE THIS WITH YOUR REPO
