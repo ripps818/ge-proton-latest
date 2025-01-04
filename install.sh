@@ -21,9 +21,6 @@ FILES=(
   "toolmanifest.vdf"
 )
 
-COMPAT_DIR="$STEAM_DIR/compatibilitytools.d"
-INSTALL_DIR="$COMPAT_DIR/GE-Proton-Latest"
-
 # GitHub repository information.
 REPO="ripps818/ge-proton-latest"
 BRANCH="main" # Or your branch name
@@ -69,6 +66,9 @@ if [ -z "$STEAM_DIR" ]; then
     exit 1
   fi
 fi
+
+COMPAT_DIR="$STEAM_DIR/compatibilitytools.d"
+INSTALL_DIR="$COMPAT_DIR/GE-Proton-Latest"
 
 #Create Install Directory
 mkdir -p "$INSTALL_DIR" || {
