@@ -26,3 +26,6 @@ This installation method is recommended as it is the most efficient and requires
 
 ```bash
 curl -sL https://raw.githubusercontent.com/ripps818/ge-proton-latest/main/install.sh | bash
+```
+
+If you need to specify where your steam configuration directory is, you may download the script and use `-d` flag to specify it's location.
