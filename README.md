@@ -1,6 +1,6 @@
-# ge-proton-latest
+# GE-Proton-Latest
 
-This script simplifies the process of installing and managing Glorious Eggroll's GE-Proton versions within your Steam compatibility tools directory. It downloads the latest GE-Proton release from GitHub, verifies its integrity, and installs it automatically, selecting the highest version available. This repository also includes a wrapper script for launching games with the selected GE-Proton.
+Wrapper and update script to run as a compatibility tool from steam. The wrapper script checks for the newest version of GE-Proton in your Steam's compatibilitytools.d and uses it. Before the wrapper starts proton, it will automatically check if a new version of GE-Proton is available from GlouriousEggroll and install the newest version in compatibilitytools.d so that at the wrapper can use it. This also allows you to manually select the newly installed version if you don't want keep using the older version (might need to restart steam for new version to be detected). 
 
 
 ## Features
@@ -15,7 +15,7 @@ This script simplifies the process of installing and managing Glorious Eggroll's
 
 *   `curl`: For downloading files from the internet.
 *   `tar`: For extracting the GE-Proton archive.
-*   `find`, `sort`, `tail`, `tr` standard linux utilities.
+*   `find`, `sort`, `tail`, `tr`: standard linux utilities.
 
 
 ## Installation
