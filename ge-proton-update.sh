@@ -5,68 +5,69 @@ set -e
 # Configuration
 STEAM_DIR=""
 COMPAT_DIR=""
+API_URL="https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest"
 
-# Help Message (Optional - remove if not needed)
+# Help Message
 print_help() {
   echo "Usage: $(basename "$0") [-d <steam_dir>]"
   echo ""
   echo "  -d <steam_dir>    Specify the Steam directory manually."
   echo "                    If not provided, the script will attempt to auto-detect it."
+  echo "  -h, --help, -?    Show this help message."
   echo ""
   echo "This script downloads and verifies the latest GE-Proton release."
   exit 0
 }
 
-# Parse Flags (Optional - remove if not needed)
+# Parse Flags
 parse_flags() {
-    while [ "$#" -gt 0 ]; do
-        case "$1" in
-            -d)
-                STEAM_DIR="$2"
-                shift 2
-                ;;
-            -h | \?)
-                print_help
-                exit 0
-                ;;
-            *)
-                echo "Error: Invalid option '$1'" >&2
-                print_help
-                exit 1
-                ;;
-        esac
-    done
+  while [ "$#" -gt 0 ]; do
+    case "$1" in
+      -d)
+        STEAM_DIR="$2"
+        shift 2
+        ;;
+      -h|--help|-?)
+        print_help
+        ;;
+      *)
+        echo "Error: Invalid option '$1'" >&2
+        print_help
+        ;;
+    esac
+  done
 }
 
 # Detect Steam Directory
 detect_steam_dir() {
-  local steam_dirs
-  steam_dirs=("$HOME/.steam/steam" "$HOME/.local/share/Steam" "$HOME/.var/app/com.valvesoftware.Steam/data/Steam")
-
   if [ -n "$STEAM_DIR" ]; then
     echo "Using provided Steam directory: $STEAM_DIR"
   else
-    for dir in "${steam_dirs[@]}"; do
-      if [ -d "$dir" ]; then
-        STEAM_DIR="$dir"
-        echo "Auto-detected Steam directory: $STEAM_DIR"
-        break
-      fi
-    done
-    if [ -z "$STEAM_DIR" ]; then
-      echo "Error: Steam directory not found. Please specify with -d." >&2
-      exit 1
-    fi
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    STEAM_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
+    echo "Auto-detected Steam directory: $STEAM_DIR"
   fi
 
   COMPAT_DIR="$STEAM_DIR/compatibilitytools.d"
 }
 
+# Check for internet connectivity using api.github.com
+check_internet() {
+  curl -s https://api.github.com > /dev/null
+  if [ $? -eq 0 ]; then
+    echo "Internet connection available."
+    return 0
+  else
+    echo "No internet connection or api.github.com is down."
+    return 1
+  fi
+}
+
 # Download, Verify, and Install
 download_verify_install() {
-  local version=$(curl -s https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest | grep "tag_name" | awk '{print $2}' | tr -d '"' | tr -d ",")
-  local tar_url=$(curl -s https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest | grep "browser_download_url" | grep "tar.gz" | awk '{print $2}' | tr -d '"')
-  local sha_url=$(curl -s https://api.github.com/repos/GloriousEggroll/proton-ge-custom/releases/latest | grep "browser_download_url" | grep "sha512sum" | awk '{print $2}' | tr -d '"')
+  local version=$(curl -s "$API_URL" | grep "tag_name" | awk '{print $2}' | tr -d '"' | tr -d ",")
+  local tar_url=$(curl -s "$API_URL" | grep "browser_download_url" | grep "tar.gz" | awk '{print $2}' | tr -d '"')
+  local sha_url=$(curl -s "$API_URL" | grep "browser_download_url" | grep "sha512sum" | awk '{print $2}' | tr -d '"')
   local temp_dir=$(mktemp -d)
   local archive_path="$temp_dir/$version.tar.gz"
   local sha_path="$temp_dir/$version.sha512sum"
@@ -79,7 +80,7 @@ download_verify_install() {
     return 0
   fi
 
-  echo "Downloading GE-Proton: $url"
+  echo "Downloading GE-Proton: $tar_url"
   curl -s -L "$tar_url" -o "$archive_path" || {
     echo "Error downloading GE-Proton." >&2
     rm -rf "$temp_dir"
@@ -112,9 +113,8 @@ download_verify_install() {
     return 1
   }
 
-  # Correctly combine tar options
   tar -xzf "$archive_path" -C "$install_dir" --strip-components=1 || {
-    echo "Error extracting GE-Proton. Check if the archive is corrupted.  Error: $?" >&2 #Added error code
+    echo "Error extracting GE-Proton. Check if the archive is corrupted.  Error: $?" >&2
     rm -rf "$temp_dir" "$install_dir"
     return 1
   }
@@ -127,14 +127,11 @@ download_verify_install() {
 parse_flags "$@"
 detect_steam_dir
 
-download_verify_install
-if [ $? -eq 0 ]; then
-  echo "GE-Proton update complete."
-  exit 0
+if check_internet; then
+  download_verify_install
 else
-    echo "GE-Proton update failed." >&2
-    exit 1
+  echo "Skipping GE-Proton update due to no internet connection."
+  exit 1
 fi
 
-echo "GE-Proton Update check complete."
-
+echo "GE-Proton update complete."
