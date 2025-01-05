@@ -25,8 +25,9 @@ parse_flags() {
         print_help
         ;;
       *)
-        echo "Error: Invalid option '$1'" >&2
-        print_help
+        # Pass everything else to Proton
+        PROTON_ARGS+=("$1")
+        shift
         ;;
     esac
   done
@@ -56,6 +57,9 @@ check_internet() {
     return 1
   fi
 }
+
+# Initialize PROTON_ARGS
+PROTON_ARGS=()
 
 # Parse flags
 parse_flags "$@"
@@ -91,5 +95,5 @@ if [ ! -x "$PROTON_EXECUTABLE" ]; then
   exit 1
 fi
 
-# Execute the Proton executable
-exec "$PROTON_EXECUTABLE" "$@"
+# Execute the Proton executable with the parsed arguments
+exec "$PROTON_EXECUTABLE" "${PROTON_ARGS[@]}"
