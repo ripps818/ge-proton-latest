@@ -11,7 +11,7 @@ STEAM_DIRS=(
 
 # Define the files to download.
 FILES=(
-  "ge-proton-update.sh"
+  "em-proton--update.sh"
   "wrapper.sh"
   "compatibilitytool.vdf"
   "version"
@@ -19,7 +19,7 @@ FILES=(
 )
 
 # GitHub repository information.
-REPO="ripps818/ge-proton-latest"
+REPO="ripps818/Proton-EM-latest"
 BRANCH="main" # Or your branch name
 
 # Function to display help message
@@ -75,11 +75,11 @@ fi
 # Iterate over all valid Steam directories and install
 for STEAM_DIR in "${PROCESSED_DIRS[@]}"; do
   COMPAT_DIR="$STEAM_DIR/compatibilitytools.d"
-  INSTALL_DIR="$COMPAT_DIR/GE-Proton-Latest"
+  INSTALL_DIR="$COMPAT_DIR/Proton-EM-Latest"
 
   # Create Install Directory
   mkdir -p "$INSTALL_DIR" || {
-    echo "Error: Could not create GE-Proton-Latest directory in $STEAM_DIR." >&2
+    echo "Error: Could not create Proton-EM-Latest directory in $STEAM_DIR." >&2
     exit 1
   }
 
@@ -96,11 +96,11 @@ for STEAM_DIR in "${PROCESSED_DIRS[@]}"; do
   done
 
   # Set permissions (adapt as needed)
-  chmod +x "$INSTALL_DIR/ge-proton-update.sh" "$INSTALL_DIR/wrapper.sh" || {
+  chmod +x "$INSTALL_DIR/em-proton--update.sh" "$INSTALL_DIR/wrapper.sh" || {
     echo "Error setting script permissions in $INSTALL_DIR." >&2
     rm -rf "$INSTALL_DIR" # Cleanup on error
     exit 1
   }
 
-  echo "Installation of ge-proton-latest complete in $INSTALL_DIR. Please restart Steam for the changes to take effect."
+  echo "Installation of Proton-EM-latest complete in $INSTALL_DIR. Please restart Steam for the changes to take effect."
 done

@@ -69,20 +69,20 @@ detect_steam_dir
 
 # Run internet check before updating
 if check_internet; then
-  "$STEAM_COMPAT_DIR"/GE-Proton-Latest/ge-proton-update.sh
+  "$STEAM_COMPAT_DIR"/Proton-EM-Latest/em-proton-update.sh
   if [ $? -ne 0 ]; then
-    echo "GE-Proton update failed." >&2
+    echo "Proton-EM update failed." >&2
   fi
 else
-  echo "Skipping GE-Proton update due to no internet connection, could not connec to GitHub."
+  echo "Skipping Proton-EM update due to no internet connection, could not connec to GitHub."
 fi
 
-# Find the highest GE-Proton version, excluding GE-Proton-Latest
-HIGHEST_VERSION=$(find "$STEAM_COMPAT_DIR" -maxdepth 1 -type d \( -name "GE-Proton*" ! -name "GE-Proton-Latest" \) -printf "%f\n" | sort -V | tail -n 1)
+# Find the highest Proton-EM version, excluding Proton-EM-Latest
+HIGHEST_VERSION=$(find "$STEAM_COMPAT_DIR" -maxdepth 1 -type d \( -name "Proton-EM*" ! -name "Proton-EM-Latest" \) -printf "%f\n" | sort -V | tail -n 1)
 
-# Handle case where no GE-Proton versions are found
+# Handle case where no Proton-EM versions are found
 if [ -z "$HIGHEST_VERSION" ]; then
-  echo "Error: No GE-Proton versions found in $STEAM_COMPAT_DIR" >&2
+  echo "Error: No Proton-EM versions found in $STEAM_COMPAT_DIR" >&2
   exit 1
 fi
 

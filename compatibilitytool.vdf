@@ -2,10 +2,10 @@
 {
   "compat_tools"
   {
-	"GE-Proton-Latest" // Internal name of this tool
+	"Proton-EM-Latest" // Internal name of this tool
 	{
           "install_path" "."
-	  "display_name" "GE-Proton-Latest"
+	  "display_name" "Proton-EM-Latest"
 	  "from_oslist"  "windows"
 	  "to_oslist"    "linux"
 	}
