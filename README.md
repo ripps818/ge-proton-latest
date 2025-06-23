@@ -24,13 +24,13 @@ Proton-EM-Latest is a wrapper and update script designed to run as a compatibili
 This method is recommended as it is the most efficient and requires no additional steps beyond installing the prerequisites:
 
 ```
-curl -sL https://raw.githubusercontent.com/ripps818/Proton-EM-latest/main/install.sh | bash
+curl -sL https://raw.githubusercontent.com/ripps818/ge-proton-latest/refs/heads/proton-em/install.sh | bash
 ```
 
 If you need to specify the location of your Steam configuration directory, you can download the script and use the `-d` flag to specify its location:
 
 ```
-curl -sL https://raw.githubusercontent.com/ripps818/Proton-EM-latest/main/install.sh -o install.sh
+curl -sL https://raw.githubusercontent.com/ripps818/ge-proton-latest/refs/heads/proton-em/install.sh -o install.sh
 bash install.sh -d /path/to/your/steam/config
 ```
 

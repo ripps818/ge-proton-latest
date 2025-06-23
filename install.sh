@@ -19,8 +19,8 @@ FILES=(
 )
 
 # GitHub repository information.
-REPO="ripps818/Proton-EM-latest"
-BRANCH="main" # Or your branch name
+REPO="ripps818/ge-proton-latest"
+BRANCH="proton-em" # Or your branch name
 
 # Function to display help message
 show_help() {
