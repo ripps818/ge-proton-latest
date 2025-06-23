@@ -11,7 +11,7 @@ STEAM_DIRS=(
 
 # Define the files to download.
 FILES=(
-  "em-proton--update.sh"
+  "em-proton-update.sh"
   "wrapper.sh"
   "compatibilitytool.vdf"
   "version"
