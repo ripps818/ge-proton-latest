@@ -67,10 +67,10 @@ check_internet() {
 download_verify_install() {
   local version=$(curl -s "$API_URL" | grep "tag_name" | awk '{print $2}' | tr -d '"' | tr -d ",")
   local tar_url=$(curl -s "$API_URL" | grep "browser_download_url" | grep "tar.xz" | awk '{print $2}' | tr -d '"')
-  local sha_url=$(curl -s "$API_URL" | grep "browser_download_url" | grep "sha512sum" | awk '{print $2}' | tr -d '"')
+  local sha_url=$(curl -s "$API_URL" | grep "browser_download_url" | grep "sha256sum" | awk '{print $2}' | tr -d '"')
   local temp_dir=$(mktemp -d)
-  local archive_path="$temp_dir/$version.tar.gz"
-  local sha_path="$temp_dir/$version.sha512sum"
+  local archive_path="$temp_dir/$version.tar.xz"
+  local sha_path="$temp_dir/$version.sha256sum"
   local install_dir="$COMPAT_DIR/$version"
 
   # Check if the version is already installed
@@ -96,7 +96,7 @@ download_verify_install() {
 
   echo "Verifying checksum..."
   expected_checksum=$(cut -d' ' -f1 "$sha_path")
-  actual_checksum=$(sha512sum "$archive_path" | awk '{print $1}')
+  actual_checksum=$(sha256sum "$archive_path" | awk '{print $1}')
 
   if [ "$actual_checksum" != "$expected_checksum" ]; then
     echo "Error: Checksum verification failed. Expected: $expected_checksum, Actual: $actual_checksum" >&2
