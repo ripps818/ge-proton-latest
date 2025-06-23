@@ -66,7 +66,7 @@ check_internet() {
 # Download, Verify, and Install
 download_verify_install() {
   local version=$(curl -s "$API_URL" | grep "tag_name" | awk '{print $2}' | tr -d '"' | tr -d ",")
-  local tar_url=$(curl -s "$API_URL" | grep "browser_download_url" | grep "tar.gz" | awk '{print $2}' | tr -d '"')
+  local tar_url=$(curl -s "$API_URL" | grep "browser_download_url" | grep "tar.xz" | awk '{print $2}' | tr -d '"')
   local sha_url=$(curl -s "$API_URL" | grep "browser_download_url" | grep "sha512sum" | awk '{print $2}' | tr -d '"')
   local temp_dir=$(mktemp -d)
   local archive_path="$temp_dir/$version.tar.gz"
